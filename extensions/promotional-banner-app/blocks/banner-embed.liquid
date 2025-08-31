@@ -1,39 +1,218 @@
 <div class="promotional-banner" style="
-  background-color: {{ block.settings.background_color }};
-  color: {{ block.settings.text_color }};
-  padding: 12px 20px;
+  background: linear-gradient(90deg, #ff6b6b 0%, #ff8e8e 100%);
+  color: white;
+  padding: 15px 20px;
   text-align: center;
   font-weight: bold;
-  position: relative;
-  z-index: 1000;
-  font-size: 16px;
-  border-bottom: 2px solid #e0e0e0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  font-size: 18px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-sizing: border-box;
+  transition: all 0.3s ease;
 ">
-  <div class="banner-content">
-    🎉 {{ block.settings.banner_text | default: "Free Shipping on All Orders!" }} 🎉
+  <div class="banner-content" style="max-width: 1200px; margin: 0 auto;">
+    <span class="banner-emoji">🎉</span>
+    <span class="banner-text">{{ block.settings.banner_text | default: "Free Shipping on All Orders!" }}</span>
+    <span class="banner-emoji">🎉</span>
   </div>
 </div>
 
 <style>
+/* Main banner animations */
 .promotional-banner {
-  animation: slideDown 0.5s ease-in-out;
+  animation: slideDownBounce 1.2s ease-out forwards, pulse 3s ease-in-out 2s infinite;
 }
 
-@keyframes slideDown {
-  from {
+/* Slide down with bounce effect */
+@keyframes slideDownBounce {
+  0% {
     transform: translateY(-100%);
     opacity: 0;
   }
-  to {
+  70% {
+    transform: translateY(10px);
+    opacity: 1;
+  }
+  100% {
     transform: translateY(0);
     opacity: 1;
   }
 }
 
+/* Subtle pulsing animation */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+/* Emoji bounce animation */
+.banner-emoji {
+  display: inline-block;
+  animation: bounce 2s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+.banner-emoji:last-child {
+  animation-delay: 1.7s;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-8px);
+  }
+  60% {
+    transform: translateY(-4px);
+  }
+}
+
+/* Text shimmer effect */
+.banner-text {
+  background: linear-gradient(90deg, 
+    currentColor 0%, 
+    rgba(255,255,255,0.8) 50%, 
+    currentColor 100%
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: shimmer 3s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Hover effects */
+.promotional-banner:hover {
+  transform: scale(1.01);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  background: linear-gradient(90deg, #ff5252 0%, #ff7979 100%);
+}
+
+.promotional-banner:hover .banner-emoji {
+  animation: spin 0.6s ease-in-out;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.2);
+  }
+  to {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+/* Push body content down */
+body {
+  padding-top: 65px !important;
+  transition: padding-top 0.3s ease;
+}
+
+/* Gradient animation on background */
+.promotional-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255,255,255,0.2) 50%, 
+    transparent 100%
+  );
+  animation: sweep 4s ease-in-out infinite;
+  animation-delay: 3s;
+}
+
+@keyframes sweep {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Responsive animations */
 @media (max-width: 768px) {
   .promotional-banner {
+    font-size: 16px;
+    padding: 12px 15px;
+  }
+  
+  body {
+    padding-top: 55px !important;
+  }
+  
+  .banner-emoji {
+    animation: bounce 2.5s ease-in-out infinite;
+  }
+}
+
+@media (max-width: 480px) {
+  .promotional-banner {
     font-size: 14px;
-    padding: 10px 15px;
+    padding: 10px 12px;
+  }
+  
+  body {
+    padding-top: 50px !important;
+  }
+  
+  /* Reduce animations on small screens for performance */
+  .promotional-banner {
+    animation: slideDownBounce 1s ease-out forwards;
+  }
+  
+  .banner-text {
+    animation: none;
+  }
+}
+
+/* Animation for when banner closes (if you add close functionality later) */
+.promotional-banner.closing {
+  animation: slideUp 0.8s ease-in forwards;
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+/* Print media - hide animations */
+@media print {
+  .promotional-banner,
+  .promotional-banner * {
+    animation: none !important;
+    transition: none !important;
   }
 }
 </style>
@@ -47,7 +226,8 @@
       "type": "text",
       "id": "banner_text",
       "label": "Banner Text",
-      "default": "Free Shipping on All Orders!"
+      "default": "Free Shipping on All Orders!",
+      "info": "The text that will appear in the banner"
     },
     {
       "type": "color",
@@ -58,8 +238,34 @@
     {
       "type": "color",
       "id": "text_color",
-      "label": "Text Color", 
+      "label": "Text Color",
       "default": "#ffffff"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_banner",
+      "label": "Show Banner",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "animation_style",
+      "label": "Animation Style",
+      "default": "bounce",
+      "options": [
+        {
+          "value": "bounce",
+          "label": "Bounce Effect"
+        },
+        {
+          "value": "slide",
+          "label": "Simple Slide"
+        },
+        {
+          "value": "fade",
+          "label": "Fade In"
+        }
+      ]
     }
   ]
 }

@@ -2,7 +2,7 @@
 
 client_id = "d9443ae0e772994fa864a15b69cecee1"
 name = "promotional-banner-app"
-application_url = "https://me-petersburg-literacy-transmission.trycloudflare.com"
+application_url = "https://places-rivers-incorporated-albums.trycloudflare.com"
 embedded = true
 handle = "promotional-banner-app-13"
 
@@ -26,7 +26,7 @@ api_version = "2025-07"
 scopes = "write_products"
 
 [auth]
-redirect_urls = ["https://me-petersburg-literacy-transmission.trycloudflare.com/auth/callback", "https://me-petersburg-literacy-transmission.trycloudflare.com/auth/shopify/callback", "https://me-petersburg-literacy-transmission.trycloudflare.com/api/auth/callback"]
+redirect_urls = ["https://places-rivers-incorporated-albums.trycloudflare.com/auth/callback", "https://places-rivers-incorporated-albums.trycloudflare.com/auth/shopify/callback", "https://places-rivers-incorporated-albums.trycloudflare.com/api/auth/callback"]
 
 [pos]
 embedded = false
